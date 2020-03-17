@@ -1,6 +1,6 @@
 import React from 'react'
-import { Alert, StyleSheet, ScrollView, View, Text, TextInput,
-		TouchableOpacity, StatusBar,} 
+import { Alert, Image, StyleSheet, Text, TextInput,
+		TouchableOpacity, View, ScrollView, StatusBar,} 
 			from 'react-native'
 
 export default class App extends React.Component {
@@ -80,9 +80,19 @@ class ProductList extends React.Component {
 		.then(d => this.setState({products:d}))
 	}
 	render() {
-		return <View style={Style.main}>
-			{this.state.products.map( (v,i) => <Text key={i}>{v.name}</Text> )}
-		</View>
+		return <ScrollView style={Style.main}>
+			{this.state.products.map( (v,i) => <TouchableOpacity key={i}>
+				<View style={Style.product}>
+					<Image source={{uri: Settings.base + '/photo' + v.photo}} 
+							style={Style.productImage} />
+					<View style={{flexDirection:'column'}}>
+						<Text style={Style.productTitle}>{v.name.substring(0, 20)}</Text>
+						<Text style={Style.productDetail}>{v.detail.substring(0, 100)}</Text>
+					</View>
+				</View>
+			</TouchableOpacity>
+			)}
+		</ScrollView>
 	}
 }
 
@@ -96,5 +106,11 @@ var Style = {
 	button: { width:'100%', },
 	buttonText: { fontSize:20, color:'black', textAlign:'center' },
 	textInput : { borderWidth: 2, borderColor:'#ccc', borderStyle:'solid', height: 40,
-					padding:2, paddingLeft:4, marginBottom:4 }
+					padding:2, paddingLeft:4, marginBottom:4 },
+	product: { flexDirection: 'row', backgroundColor:'#fafafa', marginBottom:2,
+				height: 120},
+	productImage: {width: 120, height:120, marginRight:2, borderWidth:2,
+					borderColor:'#ccc' },
+	productTitle: {fontSize: 20, overflow:'hidden'},
+	productDetail: {color:'#888', overflow:'hidden'}
 }
